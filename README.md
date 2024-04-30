@@ -13,7 +13,12 @@ Role-based Access Control is a mechanism that restricts access to an information
 Let's Build
 By the end of this article we are going build a simple room booking API with Go that will allow visitors to view available rooms as well as register, login and book rooms. There will also be an administrator who will have the permissions map user to permissions as well as add and update rooms information.
 
+<!-- image -->
+
+![Diagram](./img/diagram.avif)
+
 ## Prerequisites
 
-Basic knowledge of Go
-Patience 😄
+- Basic knowledge of Go
+- Basic knowledge of RESTful APIs
+- Patience 😄
