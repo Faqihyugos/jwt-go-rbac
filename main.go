@@ -2,6 +2,7 @@ package main
 
 // load required packages
 import (
+	"faqihyugos/jwt-go-rbac/controller"
 	"faqihyugos/jwt-go-rbac/database"
 	"faqihyugos/jwt-go-rbac/model"
 	"fmt"
@@ -46,6 +47,11 @@ func seedData() {
 
 func serveApplication() {
 	router := gin.Default()
+	authRoutes := router.Group("/auth/user")
+	// registration route
+	authRoutes.POST("/register", controller.Register)
+	// login route
+	authRoutes.POST("/login", controller.Login)
 
 	router.Run(":8000")
 	fmt.Println("Server running on port 8000")
