@@ -5,6 +5,7 @@ import (
 	"faqihyugos/jwt-go-rbac/controller"
 	"faqihyugos/jwt-go-rbac/database"
 	"faqihyugos/jwt-go-rbac/model"
+	"faqihyugos/jwt-go-rbac/util"
 	"fmt"
 	"log"
 	"os"
@@ -52,6 +53,15 @@ func serveApplication() {
 	authRoutes.POST("/register", controller.Register)
 	// login route
 	authRoutes.POST("/login", controller.Login)
+
+	adminRoutes := router.Group("/admin")
+	adminRoutes.Use(util.JWTAuth())
+	adminRoutes.GET("/users", controller.GetUsers)
+	adminRoutes.GET("/user/:id", controller.GetUser)
+	adminRoutes.PUT("/user/:id", controller.UpdateUser)
+	adminRoutes.POST("/user/role", controller.CreateRole)
+	adminRoutes.GET("/user/roles", controller.GetRoles)
+	adminRoutes.PUT("/user/role/:id", controller.UpdateRole)
 
 	router.Run(":8000")
 	fmt.Println("Server running on port 8000")

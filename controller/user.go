@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"faqihyugos/jwt-go-rbac/model"
+	"faqihyugos/jwt-go-rbac/util"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -70,7 +71,14 @@ func Login(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"username": input.Username, "message": "Successfully logged in"})
+	jwt, err := util.GenerateJWT(user)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"token": jwt, "username": input.Username, "message": "Successfully logged in"})
 
 }
 
