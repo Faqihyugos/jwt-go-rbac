@@ -3,8 +3,10 @@ package main
 // load required packages
 import (
 	"faqihyugos/jwt-go-rbac/database"
+	"faqihyugos/jwt-go-rbac/model"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -29,6 +31,17 @@ func loadEnv() {
 
 func loadDatabase() {
 	database.InitDb()
+	database.Db.AutoMigrate(&model.Role{})
+	database.Db.AutoMigrate(&model.User{})
+	seedData()
+}
+
+// load seed data into the database
+func seedData() {
+	var roles = []model.Role{{Name: "admin", Description: "Administrator role"}, {Name: "customer", Description: "Authenticated customer role"}, {Name: "anonymous", Description: "Unauthenticated customer role"}}
+	var user = []model.User{{Username: os.Getenv("ADMIN_USERNAME"), Email: os.Getenv("ADMIN_EMAIL"), Password: os.Getenv("ADMIN_PASSWORD"), RoleID: 1}}
+	database.Db.Save(&roles)
+	database.Db.Save(&user)
 }
 
 func serveApplication() {
